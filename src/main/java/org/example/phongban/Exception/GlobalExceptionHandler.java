@@ -78,4 +78,21 @@ public class GlobalExceptionHandler {
                 HttpStatus.CONFLICT
         );
     }
+    @ExceptionHandler(InvalidFileException.class)
+    public ResponseEntity<ApiResponse<?>> handleInvalidFileException(
+            InvalidFileException ex
+    ) {
+
+        ApiResponse<?> response =
+                new ApiResponse<>(
+                        "FAIL",
+                        ex.getMessage(),
+                        null
+                );
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.BAD_REQUEST
+        );
+    }
 }
