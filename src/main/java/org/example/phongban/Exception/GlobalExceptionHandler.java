@@ -30,15 +30,52 @@ public class GlobalExceptionHandler {
                     );
                 });
 
-        ApiResponse<?> response = new ApiResponse<>(
-                "FAIL",
-                "Dữ liệu không hợp lệ",
-                errors
-        );
+        ApiResponse<?> response =
+                new ApiResponse<>(
+                        "FAIL",
+                        "Dữ liệu không hợp lệ",
+                        errors
+                );
 
         return new ResponseEntity<>(
                 response,
                 HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponse<?>> handleNotFoundException(
+            ResourceNotFoundException ex
+    ) {
+
+        ApiResponse<?> response =
+                new ApiResponse<>(
+                        "FAIL",
+                        ex.getMessage(),
+                        null
+                );
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.NOT_FOUND
+        );
+    }
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ApiResponse<?>> handleDuplicateException(
+            DuplicateResourceException ex
+    ) {
+
+        ApiResponse<?> response =
+                new ApiResponse<>(
+                        "FAIL",
+                        ex.getMessage(),
+                        null
+                );
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.CONFLICT
         );
     }
 }
