@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.example.phongban.Models.Dto.DepartmentDTO;
 import org.example.phongban.Models.Entity.Department;
 import org.example.phongban.Repositories.DepartmentRepository;
+import org.example.phongban.Response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,9 @@ public class DepartmentController {
 
     private final DepartmentRepository departmentRepository;
 
-    public DepartmentController(DepartmentRepository departmentRepository) {
+    public DepartmentController(
+            DepartmentRepository departmentRepository
+    ) {
         this.departmentRepository = departmentRepository;
     }
 
@@ -28,11 +31,20 @@ public class DepartmentController {
         Department department = new Department();
 
         department.setName(departmentDTO.getName());
-        department.setDescription(departmentDTO.getDescription());
+        department.setDescription(
+                departmentDTO.getDescription()
+        );
 
         Department savedDepartment =
                 departmentRepository.save(department);
 
-        return ResponseEntity.ok(savedDepartment);
+        ApiResponse<Department> response =
+                new ApiResponse<>(
+                        "SUCCESS",
+                        "Tạo phòng ban thành công",
+                        savedDepartment
+                );
+
+        return ResponseEntity.status(201).body(response);
     }
 }
